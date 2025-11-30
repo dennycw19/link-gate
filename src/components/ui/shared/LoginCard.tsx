@@ -22,41 +22,26 @@ import {
 import { Input } from "~/components/ui/input";
 
 //Validasi
-const createRegister = z
-  .object({
-    username: z
-      .string()
-      .max(32)
-      .min(5, "Username must be at least 5 characters"),
-    password: z
-      .string()
-      .max(32)
-      .min(8, "Username must be at least 8 characters")
-      .regex(/[A-Z]/, "Password must contain capital letters")
-      .regex(/[^a-zA-Z0-9]/, "Password must contain special characters"),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Password dan Confirm Password tidak sama",
-    path: ["confirmPassword"],
-  });
+const createLogin = z.object({
+  username: z.string().max(32).min(5),
+  password: z.string().max(32).min(8),
+});
 
 //Typescript type
-type CreateRegister = z.infer<typeof createRegister>;
+type CreateLogin = z.infer<typeof createLogin>;
 
-export const RegisterCard = () => {
+export const LoginCard = () => {
   const router = useRouter();
-  const formRegister = useForm<CreateRegister>({
-    resolver: zodResolver(createRegister),
+  const formLogin = useForm<CreateLogin>({
+    resolver: zodResolver(createLogin),
     defaultValues: {
       username: "",
       password: "",
-      confirmPassword: "",
     },
   });
 
-  function onSubmit(data: CreateRegister) {
-    console.log("REGISTER DATA:", data);
+  function onSubmit(data: CreateLogin) {
+    console.log("LOGIN DATA:", data);
   }
 
   return (
@@ -64,20 +49,17 @@ export const RegisterCard = () => {
       <Card className="w-full max-w-md bg-neutral-800 p-8">
         <FieldSet className="text-neutral-100">
           <CardHeader className="justify-center">
-            <FieldLegend className="text-2xl!">REGISTER</FieldLegend>
+            <FieldLegend className="text-2xl!">LOGIN</FieldLegend>
           </CardHeader>
           <CardContent>
-            <form id="register" onSubmit={formRegister.handleSubmit(onSubmit)}>
+            <form id="login" onSubmit={formLogin.handleSubmit(onSubmit)}>
               <FieldGroup className="flex flex-col gap-6">
                 <Controller
                   name="username"
-                  control={formRegister.control}
+                  control={formLogin.control}
                   render={({ field, fieldState }) => (
                     <Field>
                       <FieldLabel htmlFor="username">Username</FieldLabel>
-                      <FieldDescription>
-                        Choose an unique username for your account.
-                      </FieldDescription>
                       <Input
                         {...field}
                         id="username"
@@ -93,7 +75,7 @@ export const RegisterCard = () => {
                 />
                 <Controller
                   name="password"
-                  control={formRegister.control}
+                  control={formLogin.control}
                   render={({ field, fieldState }) => (
                     <Field>
                       <FieldLabel htmlFor="password">Password</FieldLabel>
@@ -111,43 +93,22 @@ export const RegisterCard = () => {
                     </Field>
                   )}
                 />
-                <Controller
-                  name="confirmPassword"
-                  control={formRegister.control}
-                  render={({ field, fieldState }) => (
-                    <Field>
-                      <FieldLabel htmlFor="confirmPassword">
-                        Confirm Password
-                      </FieldLabel>
-
-                      <Input
-                        {...field}
-                        id="confirmPassword"
-                        type="password"
-                        placeholder="Insert confirmation password..."
-                      />
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
               </FieldGroup>
             </form>
           </CardContent>
           <CardFooter>
             <Field orientation={"vertical"} className="gap-4">
-              <Button type="submit" form="register">
-                Register
+              <Button type="submit" form="login">
+                Login
               </Button>
-              <Button
+              {/* <Button
                 type="button"
                 variant={"outline"}
                 className="text-black"
                 onClick={() => router.push("/login")}
               >
                 Cancel
-              </Button>
+              </Button> */}
             </Field>
           </CardFooter>
         </FieldSet>
