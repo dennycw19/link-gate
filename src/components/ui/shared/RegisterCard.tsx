@@ -71,7 +71,7 @@ export const RegisterCard = () => {
                   name="username"
                   control={formRegister.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field>
                       <FieldLabel htmlFor="username">Username</FieldLabel>
                       <FieldDescription>
                         Choose an unique username for your account.
@@ -82,7 +82,6 @@ export const RegisterCard = () => {
                         type="text"
                         aria-invalid={fieldState.invalid}
                         placeholder="Insert username..."
-                        required
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -94,7 +93,7 @@ export const RegisterCard = () => {
                   name="password"
                   control={formRegister.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field>
                       <FieldLabel htmlFor="password">Password</FieldLabel>
 
                       <Input
@@ -103,7 +102,6 @@ export const RegisterCard = () => {
                         type="password"
                         aria-invalid={fieldState.invalid}
                         placeholder="Insert password..."
-                        required
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -115,7 +113,7 @@ export const RegisterCard = () => {
                   name="confirmPassword"
                   control={formRegister.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
+                    <Field>
                       <FieldLabel htmlFor="confirmPassword">
                         Confirm Password
                       </FieldLabel>
@@ -125,7 +123,6 @@ export const RegisterCard = () => {
                         id="confirmPassword"
                         type="password"
                         placeholder="Insert confirmation password..."
-                        required
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
