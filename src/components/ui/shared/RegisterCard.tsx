@@ -137,13 +137,17 @@ export const RegisterCard = () => {
           </CardContent>
           <CardFooter>
             <Field orientation={"vertical"} className="gap-4">
-              <Button type="submit" form="register">
+              <Button
+                type="submit"
+                form="register"
+                variant={"outline"}
+                className="text-black"
+              >
                 Register
               </Button>
               <Button
                 type="button"
-                variant={"outline"}
-                className="text-black"
+                variant={"default"}
                 onClick={() => router.push("/login")}
               >
                 Cancel

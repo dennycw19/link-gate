@@ -98,7 +98,7 @@ export const LoginCard = () => {
           </CardContent>
           <CardFooter>
             <Field orientation={"vertical"} className="gap-4">
-              <Button type="submit" form="login">
+              <Button type="submit" form="login" variant={"outline"} className="text-black">
                 Login
               </Button>
               {/* <Button
