@@ -1,7 +1,9 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { compare } from "bcrypt";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 // import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { string } from "zod";
 
 import { db } from "~/server/db";
 
@@ -39,36 +41,45 @@ export const authConfig = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "username" },
-        password: { label: "Password", type: "password" },
+        username: {},
+        password: {},
       },
       async authorize(credentials, req) {
-        const user = USERS.find(
-          (u) =>
-            u.username === credentials.username &&
-            u.password === credentials.password,
-        );
-
-        if (user) {
-          return { id: user.id, name: user.username };
+        const username = credentials?.username as string;
+        const password = credentials?.password as string;
+        if (!credentials.username || !credentials.password) {
+          return null;
         }
 
-        return null;
+        // Cari user di database
+        const user = await db.user.findUnique({
+          where: { username: username },
+        });
+
+        if (!user?.password) return null;
+
+        // Cocokkan dengan hashed password
+        const isValid = await compare(password, user.password);
+
+        if (!isValid) return null;
+        return {
+          id: user.id.toString(),
+          username: user.username,
+        };
       },
     }),
-    // DiscordProvider,
   ],
   session: { strategy: "jwt" },
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     if (user) token.user = user;
-  //     return token;
-  //   },
-  //   async session({ session, token }) {
-  //     session.user = token.user;
-  //     return session;
-  //   },
-  // },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) token.user = user;
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user as typeof session.user;
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },

@@ -38,6 +38,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  * 
  */
 export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
+ * Model Links
+ * 
+ */
+export type Links = $Result.DefaultSelection<Prisma.$LinksPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -206,6 +211,16 @@ export class PrismaClient<
     * ```
     */
   get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.links`: Exposes CRUD operations for the **Links** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Links
+    * const links = await prisma.links.findMany()
+    * ```
+    */
+  get links(): Prisma.LinksDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -651,7 +666,8 @@ export namespace Prisma {
     Account: 'Account',
     Session: 'Session',
     User: 'User',
-    VerificationToken: 'VerificationToken'
+    VerificationToken: 'VerificationToken',
+    Links: 'Links'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -670,7 +686,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "post" | "account" | "session" | "user" | "verificationToken"
+      modelProps: "post" | "account" | "session" | "user" | "verificationToken" | "links"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1044,6 +1060,80 @@ export namespace Prisma {
           }
         }
       }
+      Links: {
+        payload: Prisma.$LinksPayload<ExtArgs>
+        fields: Prisma.LinksFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LinksFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LinksFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>
+          }
+          findFirst: {
+            args: Prisma.LinksFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LinksFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>
+          }
+          findMany: {
+            args: Prisma.LinksFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>[]
+          }
+          create: {
+            args: Prisma.LinksCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>
+          }
+          createMany: {
+            args: Prisma.LinksCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LinksCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>[]
+          }
+          delete: {
+            args: Prisma.LinksDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>
+          }
+          update: {
+            args: Prisma.LinksUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>
+          }
+          deleteMany: {
+            args: Prisma.LinksDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LinksUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LinksUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>[]
+          }
+          upsert: {
+            args: Prisma.LinksUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinksPayload>
+          }
+          aggregate: {
+            args: Prisma.LinksAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLinks>
+          }
+          groupBy: {
+            args: Prisma.LinksGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LinksGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LinksCountArgs<ExtArgs>
+            result: $Utils.Optional<LinksCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1145,6 +1235,7 @@ export namespace Prisma {
     session?: SessionOmit
     user?: UserOmit
     verificationToken?: VerificationTokenOmit
+    links?: LinksOmit
   }
 
   /* Types for Logging */
@@ -1228,12 +1319,14 @@ export namespace Prisma {
     accounts: number
     sessions: number
     posts: number
+    links: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | UserCountOutputTypeCountAccountsArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     posts?: boolean | UserCountOutputTypeCountPostsArgs
+    links?: boolean | UserCountOutputTypeCountLinksArgs
   }
 
   // Custom InputTypes
@@ -1266,6 +1359,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PostWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LinksWhereInput
   }
 
 
@@ -4626,6 +4726,8 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    username: string | null
+    password: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -4634,6 +4736,8 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    username: string | null
+    password: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -4642,6 +4746,8 @@ export namespace Prisma {
     email: number
     emailVerified: number
     image: number
+    username: number
+    password: number
     _all: number
   }
 
@@ -4652,6 +4758,8 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    username?: true
+    password?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -4660,6 +4768,8 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    username?: true
+    password?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -4668,6 +4778,8 @@ export namespace Prisma {
     email?: true
     emailVerified?: true
     image?: true
+    username?: true
+    password?: true
     _all?: true
   }
 
@@ -4749,6 +4861,8 @@ export namespace Prisma {
     email: string | null
     emailVerified: Date | null
     image: string | null
+    username: string | null
+    password: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -4774,9 +4888,12 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    username?: boolean
+    password?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     posts?: boolean | User$postsArgs<ExtArgs>
+    links?: boolean | User$linksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4786,6 +4903,8 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    username?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4794,6 +4913,8 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    username?: boolean
+    password?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -4802,13 +4923,16 @@ export namespace Prisma {
     email?: boolean
     emailVerified?: boolean
     image?: boolean
+    username?: boolean
+    password?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "username" | "password", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     posts?: boolean | User$postsArgs<ExtArgs>
+    links?: boolean | User$linksArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4820,6 +4944,7 @@ export namespace Prisma {
       accounts: Prisma.$AccountPayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       posts: Prisma.$PostPayload<ExtArgs>[]
+      links: Prisma.$LinksPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4827,6 +4952,8 @@ export namespace Prisma {
       email: string | null
       emailVerified: Date | null
       image: string | null
+      username: string | null
+      password: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -5224,6 +5351,7 @@ export namespace Prisma {
     accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    links<T extends User$linksArgs<ExtArgs> = {}>(args?: Subset<T, User$linksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5258,6 +5386,8 @@ export namespace Prisma {
     readonly email: FieldRef<"User", 'String'>
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
+    readonly username: FieldRef<"User", 'String'>
+    readonly password: FieldRef<"User", 'String'>
   }
     
 
@@ -5715,6 +5845,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * User.links
+   */
+  export type User$linksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    where?: LinksWhereInput
+    orderBy?: LinksOrderByWithRelationInput | LinksOrderByWithRelationInput[]
+    cursor?: LinksWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LinksScalarFieldEnum | LinksScalarFieldEnum[]
   }
 
   /**
@@ -6706,6 +6860,1064 @@ export namespace Prisma {
 
 
   /**
+   * Model Links
+   */
+
+  export type AggregateLinks = {
+    _count: LinksCountAggregateOutputType | null
+    _min: LinksMinAggregateOutputType | null
+    _max: LinksMaxAggregateOutputType | null
+  }
+
+  export type LinksMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    link: string | null
+    userId: string | null
+  }
+
+  export type LinksMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    link: string | null
+    userId: string | null
+  }
+
+  export type LinksCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    link: number
+    userId: number
+    _all: number
+  }
+
+
+  export type LinksMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    link?: true
+    userId?: true
+  }
+
+  export type LinksMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    link?: true
+    userId?: true
+  }
+
+  export type LinksCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    link?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type LinksAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Links to aggregate.
+     */
+    where?: LinksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Links to fetch.
+     */
+    orderBy?: LinksOrderByWithRelationInput | LinksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LinksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Links.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Links
+    **/
+    _count?: true | LinksCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LinksMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LinksMaxAggregateInputType
+  }
+
+  export type GetLinksAggregateType<T extends LinksAggregateArgs> = {
+        [P in keyof T & keyof AggregateLinks]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLinks[P]>
+      : GetScalarType<T[P], AggregateLinks[P]>
+  }
+
+
+
+
+  export type LinksGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LinksWhereInput
+    orderBy?: LinksOrderByWithAggregationInput | LinksOrderByWithAggregationInput[]
+    by: LinksScalarFieldEnum[] | LinksScalarFieldEnum
+    having?: LinksScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LinksCountAggregateInputType | true
+    _min?: LinksMinAggregateInputType
+    _max?: LinksMaxAggregateInputType
+  }
+
+  export type LinksGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    link: string
+    userId: string
+    _count: LinksCountAggregateOutputType | null
+    _min: LinksMinAggregateOutputType | null
+    _max: LinksMaxAggregateOutputType | null
+  }
+
+  type GetLinksGroupByPayload<T extends LinksGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LinksGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LinksGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LinksGroupByOutputType[P]>
+            : GetScalarType<T[P], LinksGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LinksSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    link?: boolean
+    userId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["links"]>
+
+  export type LinksSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    link?: boolean
+    userId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["links"]>
+
+  export type LinksSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    link?: boolean
+    userId?: boolean
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["links"]>
+
+  export type LinksSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    link?: boolean
+    userId?: boolean
+  }
+
+  export type LinksOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "link" | "userId", ExtArgs["result"]["links"]>
+  export type LinksInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LinksIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type LinksIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    author?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $LinksPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Links"
+    objects: {
+      author: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      link: string
+      userId: string
+    }, ExtArgs["result"]["links"]>
+    composites: {}
+  }
+
+  type LinksGetPayload<S extends boolean | null | undefined | LinksDefaultArgs> = $Result.GetResult<Prisma.$LinksPayload, S>
+
+  type LinksCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LinksFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LinksCountAggregateInputType | true
+    }
+
+  export interface LinksDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Links'], meta: { name: 'Links' } }
+    /**
+     * Find zero or one Links that matches the filter.
+     * @param {LinksFindUniqueArgs} args - Arguments to find a Links
+     * @example
+     * // Get one Links
+     * const links = await prisma.links.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LinksFindUniqueArgs>(args: SelectSubset<T, LinksFindUniqueArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Links that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LinksFindUniqueOrThrowArgs} args - Arguments to find a Links
+     * @example
+     * // Get one Links
+     * const links = await prisma.links.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LinksFindUniqueOrThrowArgs>(args: SelectSubset<T, LinksFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Links that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksFindFirstArgs} args - Arguments to find a Links
+     * @example
+     * // Get one Links
+     * const links = await prisma.links.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LinksFindFirstArgs>(args?: SelectSubset<T, LinksFindFirstArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Links that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksFindFirstOrThrowArgs} args - Arguments to find a Links
+     * @example
+     * // Get one Links
+     * const links = await prisma.links.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LinksFindFirstOrThrowArgs>(args?: SelectSubset<T, LinksFindFirstOrThrowArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Links that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Links
+     * const links = await prisma.links.findMany()
+     * 
+     * // Get first 10 Links
+     * const links = await prisma.links.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const linksWithIdOnly = await prisma.links.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LinksFindManyArgs>(args?: SelectSubset<T, LinksFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Links.
+     * @param {LinksCreateArgs} args - Arguments to create a Links.
+     * @example
+     * // Create one Links
+     * const Links = await prisma.links.create({
+     *   data: {
+     *     // ... data to create a Links
+     *   }
+     * })
+     * 
+     */
+    create<T extends LinksCreateArgs>(args: SelectSubset<T, LinksCreateArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Links.
+     * @param {LinksCreateManyArgs} args - Arguments to create many Links.
+     * @example
+     * // Create many Links
+     * const links = await prisma.links.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LinksCreateManyArgs>(args?: SelectSubset<T, LinksCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Links and returns the data saved in the database.
+     * @param {LinksCreateManyAndReturnArgs} args - Arguments to create many Links.
+     * @example
+     * // Create many Links
+     * const links = await prisma.links.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Links and only return the `id`
+     * const linksWithIdOnly = await prisma.links.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LinksCreateManyAndReturnArgs>(args?: SelectSubset<T, LinksCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Links.
+     * @param {LinksDeleteArgs} args - Arguments to delete one Links.
+     * @example
+     * // Delete one Links
+     * const Links = await prisma.links.delete({
+     *   where: {
+     *     // ... filter to delete one Links
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LinksDeleteArgs>(args: SelectSubset<T, LinksDeleteArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Links.
+     * @param {LinksUpdateArgs} args - Arguments to update one Links.
+     * @example
+     * // Update one Links
+     * const links = await prisma.links.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LinksUpdateArgs>(args: SelectSubset<T, LinksUpdateArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Links.
+     * @param {LinksDeleteManyArgs} args - Arguments to filter Links to delete.
+     * @example
+     * // Delete a few Links
+     * const { count } = await prisma.links.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LinksDeleteManyArgs>(args?: SelectSubset<T, LinksDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Links.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Links
+     * const links = await prisma.links.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LinksUpdateManyArgs>(args: SelectSubset<T, LinksUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Links and returns the data updated in the database.
+     * @param {LinksUpdateManyAndReturnArgs} args - Arguments to update many Links.
+     * @example
+     * // Update many Links
+     * const links = await prisma.links.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Links and only return the `id`
+     * const linksWithIdOnly = await prisma.links.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LinksUpdateManyAndReturnArgs>(args: SelectSubset<T, LinksUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Links.
+     * @param {LinksUpsertArgs} args - Arguments to update or create a Links.
+     * @example
+     * // Update or create a Links
+     * const links = await prisma.links.upsert({
+     *   create: {
+     *     // ... data to create a Links
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Links we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LinksUpsertArgs>(args: SelectSubset<T, LinksUpsertArgs<ExtArgs>>): Prisma__LinksClient<$Result.GetResult<Prisma.$LinksPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Links.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksCountArgs} args - Arguments to filter Links to count.
+     * @example
+     * // Count the number of Links
+     * const count = await prisma.links.count({
+     *   where: {
+     *     // ... the filter for the Links we want to count
+     *   }
+     * })
+    **/
+    count<T extends LinksCountArgs>(
+      args?: Subset<T, LinksCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LinksCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Links.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LinksAggregateArgs>(args: Subset<T, LinksAggregateArgs>): Prisma.PrismaPromise<GetLinksAggregateType<T>>
+
+    /**
+     * Group by Links.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinksGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LinksGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LinksGroupByArgs['orderBy'] }
+        : { orderBy?: LinksGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LinksGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLinksGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Links model
+   */
+  readonly fields: LinksFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Links.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LinksClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Links model
+   */
+  interface LinksFieldRefs {
+    readonly id: FieldRef<"Links", 'String'>
+    readonly title: FieldRef<"Links", 'String'>
+    readonly description: FieldRef<"Links", 'String'>
+    readonly link: FieldRef<"Links", 'String'>
+    readonly userId: FieldRef<"Links", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Links findUnique
+   */
+  export type LinksFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * Filter, which Links to fetch.
+     */
+    where: LinksWhereUniqueInput
+  }
+
+  /**
+   * Links findUniqueOrThrow
+   */
+  export type LinksFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * Filter, which Links to fetch.
+     */
+    where: LinksWhereUniqueInput
+  }
+
+  /**
+   * Links findFirst
+   */
+  export type LinksFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * Filter, which Links to fetch.
+     */
+    where?: LinksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Links to fetch.
+     */
+    orderBy?: LinksOrderByWithRelationInput | LinksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Links.
+     */
+    cursor?: LinksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Links.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Links.
+     */
+    distinct?: LinksScalarFieldEnum | LinksScalarFieldEnum[]
+  }
+
+  /**
+   * Links findFirstOrThrow
+   */
+  export type LinksFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * Filter, which Links to fetch.
+     */
+    where?: LinksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Links to fetch.
+     */
+    orderBy?: LinksOrderByWithRelationInput | LinksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Links.
+     */
+    cursor?: LinksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Links.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Links.
+     */
+    distinct?: LinksScalarFieldEnum | LinksScalarFieldEnum[]
+  }
+
+  /**
+   * Links findMany
+   */
+  export type LinksFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * Filter, which Links to fetch.
+     */
+    where?: LinksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Links to fetch.
+     */
+    orderBy?: LinksOrderByWithRelationInput | LinksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Links.
+     */
+    cursor?: LinksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Links from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Links.
+     */
+    skip?: number
+    distinct?: LinksScalarFieldEnum | LinksScalarFieldEnum[]
+  }
+
+  /**
+   * Links create
+   */
+  export type LinksCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Links.
+     */
+    data: XOR<LinksCreateInput, LinksUncheckedCreateInput>
+  }
+
+  /**
+   * Links createMany
+   */
+  export type LinksCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Links.
+     */
+    data: LinksCreateManyInput | LinksCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Links createManyAndReturn
+   */
+  export type LinksCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * The data used to create many Links.
+     */
+    data: LinksCreateManyInput | LinksCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Links update
+   */
+  export type LinksUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Links.
+     */
+    data: XOR<LinksUpdateInput, LinksUncheckedUpdateInput>
+    /**
+     * Choose, which Links to update.
+     */
+    where: LinksWhereUniqueInput
+  }
+
+  /**
+   * Links updateMany
+   */
+  export type LinksUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Links.
+     */
+    data: XOR<LinksUpdateManyMutationInput, LinksUncheckedUpdateManyInput>
+    /**
+     * Filter which Links to update
+     */
+    where?: LinksWhereInput
+    /**
+     * Limit how many Links to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Links updateManyAndReturn
+   */
+  export type LinksUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * The data used to update Links.
+     */
+    data: XOR<LinksUpdateManyMutationInput, LinksUncheckedUpdateManyInput>
+    /**
+     * Filter which Links to update
+     */
+    where?: LinksWhereInput
+    /**
+     * Limit how many Links to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Links upsert
+   */
+  export type LinksUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Links to update in case it exists.
+     */
+    where: LinksWhereUniqueInput
+    /**
+     * In case the Links found by the `where` argument doesn't exist, create a new Links with this data.
+     */
+    create: XOR<LinksCreateInput, LinksUncheckedCreateInput>
+    /**
+     * In case the Links was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LinksUpdateInput, LinksUncheckedUpdateInput>
+  }
+
+  /**
+   * Links delete
+   */
+  export type LinksDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+    /**
+     * Filter which Links to delete.
+     */
+    where: LinksWhereUniqueInput
+  }
+
+  /**
+   * Links deleteMany
+   */
+  export type LinksDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Links to delete
+     */
+    where?: LinksWhereInput
+    /**
+     * Limit how many Links to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Links without action
+   */
+  export type LinksDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Links
+     */
+    select?: LinksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Links
+     */
+    omit?: LinksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinksInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6764,7 +7976,9 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     emailVerified: 'emailVerified',
-    image: 'image'
+    image: 'image',
+    username: 'username',
+    password: 'password'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6777,6 +7991,17 @@ export namespace Prisma {
   };
 
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
+
+
+  export const LinksScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    link: 'link',
+    userId: 'userId'
+  };
+
+  export type LinksScalarFieldEnum = (typeof LinksScalarFieldEnum)[keyof typeof LinksScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7081,9 +8306,12 @@ export namespace Prisma {
     email?: StringNullableFilter<"User"> | string | null
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
+    username?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     posts?: PostListRelationFilter
+    links?: LinksListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7092,24 +8320,30 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    username?: SortOrderInput | SortOrder
+    password?: SortOrderInput | SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
     posts?: PostOrderByRelationAggregateInput
+    links?: LinksOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    username?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
+    password?: StringNullableFilter<"User"> | string | null
     accounts?: AccountListRelationFilter
     sessions?: SessionListRelationFilter
     posts?: PostListRelationFilter
-  }, "id" | "email">
+    links?: LinksListRelationFilter
+  }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -7117,6 +8351,8 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
+    username?: SortOrderInput | SortOrder
+    password?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -7131,6 +8367,8 @@ export namespace Prisma {
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
+    password?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type VerificationTokenWhereInput = {
@@ -7174,6 +8412,61 @@ export namespace Prisma {
     identifier?: StringWithAggregatesFilter<"VerificationToken"> | string
     token?: StringWithAggregatesFilter<"VerificationToken"> | string
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
+  }
+
+  export type LinksWhereInput = {
+    AND?: LinksWhereInput | LinksWhereInput[]
+    OR?: LinksWhereInput[]
+    NOT?: LinksWhereInput | LinksWhereInput[]
+    id?: StringFilter<"Links"> | string
+    title?: StringFilter<"Links"> | string
+    description?: StringFilter<"Links"> | string
+    link?: StringFilter<"Links"> | string
+    userId?: StringFilter<"Links"> | string
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type LinksOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    link?: SortOrder
+    userId?: SortOrder
+    author?: UserOrderByWithRelationInput
+  }
+
+  export type LinksWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LinksWhereInput | LinksWhereInput[]
+    OR?: LinksWhereInput[]
+    NOT?: LinksWhereInput | LinksWhereInput[]
+    title?: StringFilter<"Links"> | string
+    description?: StringFilter<"Links"> | string
+    link?: StringFilter<"Links"> | string
+    userId?: StringFilter<"Links"> | string
+    author?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type LinksOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    link?: SortOrder
+    userId?: SortOrder
+    _count?: LinksCountOrderByAggregateInput
+    _max?: LinksMaxOrderByAggregateInput
+    _min?: LinksMinOrderByAggregateInput
+  }
+
+  export type LinksScalarWhereWithAggregatesInput = {
+    AND?: LinksScalarWhereWithAggregatesInput | LinksScalarWhereWithAggregatesInput[]
+    OR?: LinksScalarWhereWithAggregatesInput[]
+    NOT?: LinksScalarWhereWithAggregatesInput | LinksScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Links"> | string
+    title?: StringWithAggregatesFilter<"Links"> | string
+    description?: StringWithAggregatesFilter<"Links"> | string
+    link?: StringWithAggregatesFilter<"Links"> | string
+    userId?: StringWithAggregatesFilter<"Links"> | string
   }
 
   export type PostCreateInput = {
@@ -7393,9 +8686,12 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutCreatedByInput
+    links?: LinksCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7404,9 +8700,12 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
+    links?: LinksUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUpdateInput = {
@@ -7415,9 +8714,12 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutCreatedByNestedInput
+    links?: LinksUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7426,9 +8728,12 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput
+    links?: LinksUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7437,6 +8742,8 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -7445,6 +8752,8 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -7453,6 +8762,8 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type VerificationTokenCreateInput = {
@@ -7495,6 +8806,61 @@ export namespace Prisma {
     identifier?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinksCreateInput = {
+    id?: string
+    title: string
+    description: string
+    link: string
+    author: UserCreateNestedOneWithoutLinksInput
+  }
+
+  export type LinksUncheckedCreateInput = {
+    id?: string
+    title: string
+    description: string
+    link: string
+    userId: string
+  }
+
+  export type LinksUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    author?: UserUpdateOneRequiredWithoutLinksNestedInput
+  }
+
+  export type LinksUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LinksCreateManyInput = {
+    id?: string
+    title: string
+    description: string
+    link: string
+    userId: string
+  }
+
+  export type LinksUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LinksUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -7797,6 +9163,12 @@ export namespace Prisma {
     none?: PostWhereInput
   }
 
+  export type LinksListRelationFilter = {
+    every?: LinksWhereInput
+    some?: LinksWhereInput
+    none?: LinksWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -7809,12 +9181,18 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type LinksOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     email?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -7823,6 +9201,8 @@ export namespace Prisma {
     email?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -7831,6 +9211,8 @@ export namespace Prisma {
     email?: SortOrder
     emailVerified?: SortOrder
     image?: SortOrder
+    username?: SortOrder
+    password?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7868,6 +9250,30 @@ export namespace Prisma {
     identifier?: SortOrder
     token?: SortOrder
     expires?: SortOrder
+  }
+
+  export type LinksCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    link?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type LinksMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    link?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type LinksMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    link?: SortOrder
+    userId?: SortOrder
   }
 
   export type UserCreateNestedOneWithoutPostsInput = {
@@ -7961,6 +9367,13 @@ export namespace Prisma {
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
   }
 
+  export type LinksCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<LinksCreateWithoutAuthorInput, LinksUncheckedCreateWithoutAuthorInput> | LinksCreateWithoutAuthorInput[] | LinksUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: LinksCreateOrConnectWithoutAuthorInput | LinksCreateOrConnectWithoutAuthorInput[]
+    createMany?: LinksCreateManyAuthorInputEnvelope
+    connect?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -7980,6 +9393,13 @@ export namespace Prisma {
     connectOrCreate?: PostCreateOrConnectWithoutCreatedByInput | PostCreateOrConnectWithoutCreatedByInput[]
     createMany?: PostCreateManyCreatedByInputEnvelope
     connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type LinksUncheckedCreateNestedManyWithoutAuthorInput = {
+    create?: XOR<LinksCreateWithoutAuthorInput, LinksUncheckedCreateWithoutAuthorInput> | LinksCreateWithoutAuthorInput[] | LinksUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: LinksCreateOrConnectWithoutAuthorInput | LinksCreateOrConnectWithoutAuthorInput[]
+    createMany?: LinksCreateManyAuthorInputEnvelope
+    connect?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -8028,6 +9448,20 @@ export namespace Prisma {
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
   }
 
+  export type LinksUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<LinksCreateWithoutAuthorInput, LinksUncheckedCreateWithoutAuthorInput> | LinksCreateWithoutAuthorInput[] | LinksUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: LinksCreateOrConnectWithoutAuthorInput | LinksCreateOrConnectWithoutAuthorInput[]
+    upsert?: LinksUpsertWithWhereUniqueWithoutAuthorInput | LinksUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: LinksCreateManyAuthorInputEnvelope
+    set?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    disconnect?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    delete?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    connect?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    update?: LinksUpdateWithWhereUniqueWithoutAuthorInput | LinksUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: LinksUpdateManyWithWhereWithoutAuthorInput | LinksUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: LinksScalarWhereInput | LinksScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -8068,6 +9502,34 @@ export namespace Prisma {
     update?: PostUpdateWithWhereUniqueWithoutCreatedByInput | PostUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: PostUpdateManyWithWhereWithoutCreatedByInput | PostUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type LinksUncheckedUpdateManyWithoutAuthorNestedInput = {
+    create?: XOR<LinksCreateWithoutAuthorInput, LinksUncheckedCreateWithoutAuthorInput> | LinksCreateWithoutAuthorInput[] | LinksUncheckedCreateWithoutAuthorInput[]
+    connectOrCreate?: LinksCreateOrConnectWithoutAuthorInput | LinksCreateOrConnectWithoutAuthorInput[]
+    upsert?: LinksUpsertWithWhereUniqueWithoutAuthorInput | LinksUpsertWithWhereUniqueWithoutAuthorInput[]
+    createMany?: LinksCreateManyAuthorInputEnvelope
+    set?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    disconnect?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    delete?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    connect?: LinksWhereUniqueInput | LinksWhereUniqueInput[]
+    update?: LinksUpdateWithWhereUniqueWithoutAuthorInput | LinksUpdateWithWhereUniqueWithoutAuthorInput[]
+    updateMany?: LinksUpdateManyWithWhereWithoutAuthorInput | LinksUpdateManyWithWhereWithoutAuthorInput[]
+    deleteMany?: LinksScalarWhereInput | LinksScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutLinksInput = {
+    create?: XOR<UserCreateWithoutLinksInput, UserUncheckedCreateWithoutLinksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLinksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutLinksNestedInput = {
+    create?: XOR<UserCreateWithoutLinksInput, UserUncheckedCreateWithoutLinksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLinksInput
+    upsert?: UserUpsertWithoutLinksInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLinksInput, UserUpdateWithoutLinksInput>, UserUncheckedUpdateWithoutLinksInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -8264,8 +9726,11 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     sessions?: SessionCreateNestedManyWithoutUserInput
+    links?: LinksCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -8274,8 +9739,11 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    links?: LinksUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -8300,8 +9768,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    links?: LinksUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -8310,8 +9781,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    links?: LinksUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -8320,8 +9794,11 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutCreatedByInput
+    links?: LinksCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -8330,8 +9807,11 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
+    links?: LinksUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -8356,8 +9836,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutCreatedByNestedInput
+    links?: LinksUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -8366,8 +9849,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput
+    links?: LinksUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -8376,8 +9862,11 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     accounts?: AccountCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutCreatedByInput
+    links?: LinksCreateNestedManyWithoutAuthorInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -8386,8 +9875,11 @@ export namespace Prisma {
     email?: string | null
     emailVerified?: Date | string | null
     image?: string | null
+    username?: string | null
+    password?: string | null
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
+    links?: LinksUncheckedCreateNestedManyWithoutAuthorInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -8412,8 +9904,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutCreatedByNestedInput
+    links?: LinksUpdateManyWithoutAuthorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -8422,8 +9917,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput
+    links?: LinksUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -8508,6 +10006,30 @@ export namespace Prisma {
 
   export type PostCreateManyCreatedByInputEnvelope = {
     data: PostCreateManyCreatedByInput | PostCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LinksCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    description: string
+    link: string
+  }
+
+  export type LinksUncheckedCreateWithoutAuthorInput = {
+    id?: string
+    title: string
+    description: string
+    link: string
+  }
+
+  export type LinksCreateOrConnectWithoutAuthorInput = {
+    where: LinksWhereUniqueInput
+    create: XOR<LinksCreateWithoutAuthorInput, LinksUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type LinksCreateManyAuthorInputEnvelope = {
+    data: LinksCreateManyAuthorInput | LinksCreateManyAuthorInput[]
     skipDuplicates?: boolean
   }
 
@@ -8599,6 +10121,101 @@ export namespace Prisma {
     createdById?: StringFilter<"Post"> | string
   }
 
+  export type LinksUpsertWithWhereUniqueWithoutAuthorInput = {
+    where: LinksWhereUniqueInput
+    update: XOR<LinksUpdateWithoutAuthorInput, LinksUncheckedUpdateWithoutAuthorInput>
+    create: XOR<LinksCreateWithoutAuthorInput, LinksUncheckedCreateWithoutAuthorInput>
+  }
+
+  export type LinksUpdateWithWhereUniqueWithoutAuthorInput = {
+    where: LinksWhereUniqueInput
+    data: XOR<LinksUpdateWithoutAuthorInput, LinksUncheckedUpdateWithoutAuthorInput>
+  }
+
+  export type LinksUpdateManyWithWhereWithoutAuthorInput = {
+    where: LinksScalarWhereInput
+    data: XOR<LinksUpdateManyMutationInput, LinksUncheckedUpdateManyWithoutAuthorInput>
+  }
+
+  export type LinksScalarWhereInput = {
+    AND?: LinksScalarWhereInput | LinksScalarWhereInput[]
+    OR?: LinksScalarWhereInput[]
+    NOT?: LinksScalarWhereInput | LinksScalarWhereInput[]
+    id?: StringFilter<"Links"> | string
+    title?: StringFilter<"Links"> | string
+    description?: StringFilter<"Links"> | string
+    link?: StringFilter<"Links"> | string
+    userId?: StringFilter<"Links"> | string
+  }
+
+  export type UserCreateWithoutLinksInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    username?: string | null
+    password?: string | null
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutLinksInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    username?: string | null
+    password?: string | null
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutLinksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLinksInput, UserUncheckedCreateWithoutLinksInput>
+  }
+
+  export type UserUpsertWithoutLinksInput = {
+    update: XOR<UserUpdateWithoutLinksInput, UserUncheckedUpdateWithoutLinksInput>
+    create: XOR<UserCreateWithoutLinksInput, UserUncheckedCreateWithoutLinksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLinksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLinksInput, UserUncheckedUpdateWithoutLinksInput>
+  }
+
+  export type UserUpdateWithoutLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
   export type AccountCreateManyUserInput = {
     id?: string
     type: string
@@ -8625,6 +10242,13 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type LinksCreateManyAuthorInput = {
+    id?: string
+    title: string
+    description: string
+    link: string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -8708,6 +10332,27 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinksUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LinksUncheckedUpdateWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LinksUncheckedUpdateManyWithoutAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    link?: StringFieldUpdateOperationsInput | string
   }
 
 

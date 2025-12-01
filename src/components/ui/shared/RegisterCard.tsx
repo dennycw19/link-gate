@@ -1,5 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { error } from "console";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
@@ -20,20 +21,32 @@ import {
   FieldSet,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
+import { api } from "~/trpc/react";
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
+import { useState } from "react";
 
 //Validasi
-const createRegister = z
+const createRegisterFormSchema = z
   .object({
     username: z
       .string()
       .max(32)
-      .min(5, "Username must be at least 5 characters"),
+      .min(5, "Username must be at least 5 characters")
+      .regex(
+        /^[a-zA-Z0-9._-]+$/,
+        "Only letters, numbers, periods, underscores, or dashes",
+      ),
     password: z
       .string()
-      .max(32)
       .min(8, "Username must be at least 8 characters")
-      .regex(/[A-Z]/, "Password must contain capital letters")
-      .regex(/[^a-zA-Z0-9]/, "Password must contain special characters"),
+      // Minimal 1 huruf kecil
+      .regex(/[a-z]/, "Must contain lowercase letters")
+      // Minimal 1 huruf besar
+      .regex(/[A-Z]/, "Must contain uppercase letters")
+      // Minimal 1 angka
+      .regex(/\d/, "Must contain numbers")
+      // Minimal 1 simbol
+      .regex(/[^a-zA-Z0-9]/, "Must contain symbols"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -42,12 +55,15 @@ const createRegister = z
   });
 
 //Typescript type
-type CreateRegister = z.infer<typeof createRegister>;
+type CreateRegisterFormSchema = z.infer<typeof createRegisterFormSchema>;
 
 export const RegisterCard = () => {
   const router = useRouter();
-  const formRegister = useForm<CreateRegister>({
-    resolver: zodResolver(createRegister),
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const formRegister = useForm<CreateRegisterFormSchema>({
+    resolver: zodResolver(createRegisterFormSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -55,19 +71,45 @@ export const RegisterCard = () => {
     },
   });
 
-  function onSubmit(data: CreateRegister) {
-    console.log("REGISTER DATA:", data);
-  }
+  const createRegisterMutation = api.user.createUser.useMutation({
+    onSuccess: async () => {
+      alert("Registration successful. You can now log in.");
+      formRegister.reset();
+      setShowPassword(false);
+      setShowConfirmPassword(false);
+      router.push("/login");
+    },
+    onError: (error) => {
+      if (error.message.includes("Username")) {
+        formRegister.setError("username", {
+          type: "manual",
+          message: error.message,
+        });
+      } else {
+        alert(error.message);
+      }
+    },
+  });
+
+  const handleRegister = (values: CreateRegisterFormSchema) => {
+    createRegisterMutation.mutate({
+      username: values.username,
+      password: values.password,
+    });
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-900">
-      <Card className="w-full max-w-md bg-neutral-800 p-8">
-        <FieldSet className="text-neutral-100">
+    <div className="flex min-h-screen items-center justify-center">
+      <Card className="w-full max-w-md p-8">
+        <FieldSet className="">
           <CardHeader className="justify-center">
             <FieldLegend className="text-2xl!">REGISTER</FieldLegend>
           </CardHeader>
           <CardContent>
-            <form id="register" onSubmit={formRegister.handleSubmit(onSubmit)}>
+            <form
+              id="register"
+              onSubmit={formRegister.handleSubmit(handleRegister)}
+            >
               <FieldGroup className="flex flex-col gap-6">
                 <Controller
                   name="username"
@@ -75,7 +117,7 @@ export const RegisterCard = () => {
                   render={({ field, fieldState }) => (
                     <Field>
                       <FieldLabel htmlFor="username">Username</FieldLabel>
-                      <FieldDescription>
+                      <FieldDescription className="text-xs">
                         Choose an unique username for your account.
                       </FieldDescription>
                       <Input
@@ -97,14 +139,31 @@ export const RegisterCard = () => {
                   render={({ field, fieldState }) => (
                     <Field>
                       <FieldLabel htmlFor="password">Password</FieldLabel>
-
-                      <Input
-                        {...field}
-                        id="password"
-                        type="password"
-                        aria-invalid={fieldState.invalid}
-                        placeholder="Insert password..."
-                      />
+                      <FieldDescription className="text-xs">
+                        Password must contain lowercase, uppercase, numbers, and
+                        symbols
+                      </FieldDescription>
+                      <div className="flex justify-end">
+                        <Input
+                          {...field}
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          aria-invalid={fieldState.invalid}
+                          placeholder="Insert password..."
+                        />
+                        <Button
+                          type="button"
+                          className="absolute"
+                          tabIndex={-1}
+                          onClick={() => setShowPassword((show) => !show)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </Button>
+                      </div>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
@@ -119,13 +178,28 @@ export const RegisterCard = () => {
                       <FieldLabel htmlFor="confirmPassword">
                         Confirm Password
                       </FieldLabel>
-
-                      <Input
-                        {...field}
-                        id="confirmPassword"
-                        type="password"
-                        placeholder="Insert confirmation password..."
-                      />
+                      <div className="flex justify-end">
+                        <Input
+                          {...field}
+                          id="confirmPassword"
+                          type={showConfirmPassword ? "text" : "password"}
+                          placeholder="Insert confirmation password..."
+                        />
+                        <Button
+                          type="button"
+                          className="absolute"
+                          tabIndex={-1}
+                          onClick={() =>
+                            setShowConfirmPassword((show) => !show)
+                          }
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </Button>
+                      </div>
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
                       )}
@@ -140,14 +214,20 @@ export const RegisterCard = () => {
               <Button
                 type="submit"
                 form="register"
-                variant={"outline"}
-                className="text-black"
+                disabled={createRegisterMutation.isPending}
               >
-                Register
+                {createRegisterMutation.isPending ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2Icon className="animate-spin" />
+                    Registering...
+                  </span>
+                ) : (
+                  "Register"
+                )}
               </Button>
               <Button
                 type="button"
-                variant={"default"}
+                variant={"outline"}
                 onClick={() => router.push("/login")}
               >
                 Cancel

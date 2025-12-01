@@ -157,13 +157,23 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   emailVerified: 'emailVerified',
-  image: 'image'
+  image: 'image',
+  username: 'username',
+  password: 'password'
 };
 
 exports.Prisma.VerificationTokenScalarFieldEnum = {
   identifier: 'identifier',
   token: 'token',
   expires: 'expires'
+};
+
+exports.Prisma.LinksScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  link: 'link',
+  userId: 'userId'
 };
 
 exports.Prisma.SortOrder = {
@@ -187,7 +197,8 @@ exports.Prisma.ModelName = {
   Account: 'Account',
   Session: 'Session',
   User: 'User',
-  VerificationToken: 'VerificationToken'
+  VerificationToken: 'VerificationToken',
+  Links: 'Links'
 };
 
 /**
