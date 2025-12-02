@@ -1,4 +1,4 @@
-import { RegisterCard } from "~/components/ui/shared/RegisterCard";
+import { RegisterCard } from "~/components/shared/RegisterCard";
 
 export default async function RegisterPage() {
   return <RegisterCard />;

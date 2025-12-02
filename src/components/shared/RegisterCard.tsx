@@ -228,7 +228,7 @@ export const RegisterCard = () => {
               <Button
                 type="button"
                 variant={"outline"}
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/")}
               >
                 Cancel
               </Button>
