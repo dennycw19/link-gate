@@ -1,26 +1,15 @@
 "use client";
-import Link from "next/link";
-import { Button } from "../ui/button";
 import { EllipsisVerticalIcon, Link as LinkDiagonal } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
+import { Button } from "../ui/button";
 
-import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@radix-ui/react-dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
-import { AddLinkForm } from "./AddLinkFormDialog";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { api } from "~/trpc/react";
 import { toast } from "sonner";
+import { api } from "~/trpc/react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,6 +20,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../ui/alert-dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { LinkFormDialog } from "./LinkFormDialog";
 
 type LinkCardProps = {
@@ -67,8 +58,8 @@ export const LinkCard = (props: LinkCardProps) => {
           linkId: props.id,
         },
         {
-          onSuccess: async () => {
-            await apiUtils.link.getLinkPaginated.invalidate();
+          onSuccess: () => {
+            void apiUtils.link.getLinkPaginated.invalidate();
           },
         },
       ),

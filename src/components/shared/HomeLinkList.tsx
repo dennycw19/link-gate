@@ -31,7 +31,7 @@ export const HomeLinkList = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
-          paginatedLinkQuery.fetchNextPage();
+          void paginatedLinkQuery.fetchNextPage();
         }
       },
       { rootMargin: "200px" }, // trigger sebelum benar-benar di viewport
