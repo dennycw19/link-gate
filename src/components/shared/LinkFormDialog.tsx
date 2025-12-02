@@ -40,11 +40,13 @@ export const LinkFormDialog = ({
     resolver: zodResolver(linkFormSchema),
     defaultValues: defaultValues ?? { title: "", description: "", url: "" },
   });
+  const apiUtils = api.useUtils();
 
   const createMutation = api.link.createLink.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       alert("Link has been added successfully");
       form.reset();
+      await apiUtils.link.getLinkPaginated.invalidate();
       onSuccess?.();
     },
     onError: (error) => {
@@ -53,8 +55,9 @@ export const LinkFormDialog = ({
   });
 
   const updateMutation = api.link.updateLink.useMutation({
-    onSuccess: () => {
+    onSuccess: async () => {
       alert("Link has been updated successfully");
+      await apiUtils.link.getLinkPaginated.invalidate();
       onSuccess?.();
     },
     onError: (error) => {
