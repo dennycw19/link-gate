@@ -6874,6 +6874,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     link: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
     userId: string | null
   }
 
@@ -6882,6 +6884,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     link: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
     userId: string | null
   }
 
@@ -6890,6 +6894,8 @@ export namespace Prisma {
     title: number
     description: number
     link: number
+    createdAt: number
+    updatedAt: number
     userId: number
     _all: number
   }
@@ -6900,6 +6906,8 @@ export namespace Prisma {
     title?: true
     description?: true
     link?: true
+    createdAt?: true
+    updatedAt?: true
     userId?: true
   }
 
@@ -6908,6 +6916,8 @@ export namespace Prisma {
     title?: true
     description?: true
     link?: true
+    createdAt?: true
+    updatedAt?: true
     userId?: true
   }
 
@@ -6916,6 +6926,8 @@ export namespace Prisma {
     title?: true
     description?: true
     link?: true
+    createdAt?: true
+    updatedAt?: true
     userId?: true
     _all?: true
   }
@@ -6997,6 +7009,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt: Date
+    updatedAt: Date
     userId: string
     _count: LinksCountAggregateOutputType | null
     _min: LinksMinAggregateOutputType | null
@@ -7022,6 +7036,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     link?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     userId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["links"]>
@@ -7031,6 +7047,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     link?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     userId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["links"]>
@@ -7040,6 +7058,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     link?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     userId?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["links"]>
@@ -7049,10 +7069,12 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     link?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     userId?: boolean
   }
 
-  export type LinksOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "link" | "userId", ExtArgs["result"]["links"]>
+  export type LinksOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "link" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["links"]>
   export type LinksInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -7073,6 +7095,8 @@ export namespace Prisma {
       title: string
       description: string
       link: string
+      createdAt: Date
+      updatedAt: Date
       userId: string
     }, ExtArgs["result"]["links"]>
     composites: {}
@@ -7502,6 +7526,8 @@ export namespace Prisma {
     readonly title: FieldRef<"Links", 'String'>
     readonly description: FieldRef<"Links", 'String'>
     readonly link: FieldRef<"Links", 'String'>
+    readonly createdAt: FieldRef<"Links", 'DateTime'>
+    readonly updatedAt: FieldRef<"Links", 'DateTime'>
     readonly userId: FieldRef<"Links", 'String'>
   }
     
@@ -7998,6 +8024,8 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     link: 'link',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
     userId: 'userId'
   };
 
@@ -8422,6 +8450,8 @@ export namespace Prisma {
     title?: StringFilter<"Links"> | string
     description?: StringFilter<"Links"> | string
     link?: StringFilter<"Links"> | string
+    createdAt?: DateTimeFilter<"Links"> | Date | string
+    updatedAt?: DateTimeFilter<"Links"> | Date | string
     userId?: StringFilter<"Links"> | string
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -8431,6 +8461,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     userId?: SortOrder
     author?: UserOrderByWithRelationInput
   }
@@ -8443,6 +8475,8 @@ export namespace Prisma {
     title?: StringFilter<"Links"> | string
     description?: StringFilter<"Links"> | string
     link?: StringFilter<"Links"> | string
+    createdAt?: DateTimeFilter<"Links"> | Date | string
+    updatedAt?: DateTimeFilter<"Links"> | Date | string
     userId?: StringFilter<"Links"> | string
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -8452,6 +8486,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     userId?: SortOrder
     _count?: LinksCountOrderByAggregateInput
     _max?: LinksMaxOrderByAggregateInput
@@ -8466,6 +8502,8 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Links"> | string
     description?: StringWithAggregatesFilter<"Links"> | string
     link?: StringWithAggregatesFilter<"Links"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Links"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Links"> | Date | string
     userId?: StringWithAggregatesFilter<"Links"> | string
   }
 
@@ -8813,6 +8851,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     author: UserCreateNestedOneWithoutLinksInput
   }
 
@@ -8821,6 +8861,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     userId: string
   }
 
@@ -8829,6 +8871,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     author?: UserUpdateOneRequiredWithoutLinksNestedInput
   }
 
@@ -8837,6 +8881,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -8845,6 +8891,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
     userId: string
   }
 
@@ -8853,6 +8901,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LinksUncheckedUpdateManyInput = {
@@ -8860,6 +8910,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -9257,6 +9309,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     userId?: SortOrder
   }
 
@@ -9265,6 +9319,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     userId?: SortOrder
   }
 
@@ -9273,6 +9329,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     link?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     userId?: SortOrder
   }
 
@@ -10014,6 +10072,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type LinksUncheckedCreateWithoutAuthorInput = {
@@ -10021,6 +10081,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type LinksCreateOrConnectWithoutAuthorInput = {
@@ -10145,6 +10207,8 @@ export namespace Prisma {
     title?: StringFilter<"Links"> | string
     description?: StringFilter<"Links"> | string
     link?: StringFilter<"Links"> | string
+    createdAt?: DateTimeFilter<"Links"> | Date | string
+    updatedAt?: DateTimeFilter<"Links"> | Date | string
     userId?: StringFilter<"Links"> | string
   }
 
@@ -10249,6 +10313,8 @@ export namespace Prisma {
     title: string
     description: string
     link: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -10339,6 +10405,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LinksUncheckedUpdateWithoutAuthorInput = {
@@ -10346,6 +10414,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LinksUncheckedUpdateManyWithoutAuthorInput = {
@@ -10353,6 +10423,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     link?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

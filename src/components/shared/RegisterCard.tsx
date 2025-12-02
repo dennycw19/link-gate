@@ -24,6 +24,7 @@ import { Input } from "~/components/ui/input";
 import { api } from "~/trpc/react";
 import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 import { useState } from "react";
+import { useTopLoader } from "nextjs-toploader";
 
 //Validasi
 const createRegisterFormSchema = z
@@ -59,6 +60,7 @@ type CreateRegisterFormSchema = z.infer<typeof createRegisterFormSchema>;
 
 export const RegisterCard = () => {
   const router = useRouter();
+  const loader = useTopLoader();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -228,7 +230,10 @@ export const RegisterCard = () => {
               <Button
                 type="button"
                 variant={"outline"}
-                onClick={() => router.push("/")}
+                onClick={() => {
+                  loader.start();
+                  router.push("/");
+                }}
               >
                 Cancel
               </Button>

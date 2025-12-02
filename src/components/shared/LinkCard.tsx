@@ -1,37 +1,176 @@
+"use client";
 import Link from "next/link";
-import { Card, CardContent, CardHeader } from "../ui/card";
 import { Button } from "../ui/button";
+import { EllipsisVerticalIcon, Link as LinkDiagonal } from "lucide-react";
+import { useState } from "react";
 
-export const LinkCard = () => {
+import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import {
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@radix-ui/react-dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
+import { AddLinkForm } from "./AddLinkFormDialog";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { api } from "~/trpc/react";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "../ui/alert-dialog";
+import { LinkFormDialog } from "./LinkFormDialog";
+
+type LinkCardProps = {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  createdAt: Date;
+};
+
+export const LinkCard = (props: LinkCardProps) => {
+  const apiUtils = api.useUtils();
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  type TruncateURLProps = {
+    url: string;
+    max?: number;
+  };
+  const truncateURL = ({ url, max = 60 }: TruncateURLProps) => {
+    if (url.length < max) return url;
+
+    const start = url.slice(0, Math.floor(max * 0.6));
+    const end = url.slice(-Math.floor(max * 0.3));
+
+    return `${start}...${end}`;
+  };
+
+  const deleteLinkMutation = api.link.deleteLink.useMutation();
+
+  const handleDeleteLink = () => {
+    toast.promise(
+      deleteLinkMutation.mutateAsync(
+        {
+          linkId: props.id,
+        },
+        {
+          onSuccess: async () => {
+            await apiUtils.link.getLinkPaginated.invalidate();
+          },
+        },
+      ),
+      {
+        loading: "Deleting link...",
+        success: "Link deleted successfully!",
+        error: "Failed to delete post.",
+      },
+    );
+  };
+
+  const getLinkDetailQuery = api.link.getLinkById.useQuery({
+    linkId: props.id,
+  });
   return (
-    <div className="mx-4 flex flex-col justify-between gap-4 rounded-2xl border p-4 md:mx-8 md:flex-row md:gap-8">
-      <div id="link-detail" className="flex- space-y-2">
-        <h1 className="text-2xl font-bold">Judul</h1>
-        <hr />
-        <p className="text-muted-foreground text-justify text-sm">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores
-          molestias omnis velit obcaecati pariatur amet dolorum accusamus iusto.
-          Ipsum corrupti at reprehenderit, illo molestiae vitae itaque adipisci
-          eligendi a, labore magni temporibus possimus. Ipsa, repellat culpa
-          eveniet dolores ratione neque quos enim quasi dicta ab nihil
-          voluptatum, officia sit distinctio.
-        </p>
-        <p>lorem10000</p>
-
-        <div className="overflow-x-auto scroll-auto rounded-2xl border p-3">
-          <Link
-            href={
-              "https://drive.google.com/drive/folders/1Ah1RjG6BXSQj2FH6VDi4bhRAXOzSItKx"
-            }
-            target="_blank"
-            className="block break-all"
+    <div className="space-y-2 rounded-xl border p-6 shadow">
+      <div className="flex items-center justify-between">
+        <h1>{props.title}</h1>
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"link"} aria-label="Open menu" className="">
+              <EllipsisVerticalIcon />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="bg-card text-card-foreground w-40 space-y-0.5 rounded-lg border px-3 py-2 shadow-xl"
+            align="end"
           >
-            https://drive.google.com/drive/folders/1Ah1RjG6BXSQj2FH6VDi4bhRAXOzSItKxaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          </Link>
-        </div>
+            <DropdownMenuItem
+              onSelect={() => setShowEditDialog(true)}
+              className="hover:bg-accent hover:text-accent-foreground cursor-pointer p-1 hover:rounded-sm"
+            >
+              Edit...
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => setShowDeleteDialog(true)}
+              className="hover:bg-accent hover:text-accent-foreground cursor-pointer p-1 hover:rounded-sm"
+            >
+              Delete...
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Edit Link</DialogTitle>
+            </DialogHeader>
+            <LinkFormDialog
+              defaultValues={{
+                title: props.title,
+                description: props.description,
+                url: props.url,
+              }}
+              linkId={props.id}
+              onSuccess={() => setShowEditDialog(false)}
+            />
+          </DialogContent>
+        </Dialog>
+
+        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <AlertDialogContent className="sm:max-w-[425px]">
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you sure you want to delete this link?
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              link and remove it from our servers.
+            </AlertDialogDescription>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteLink}>
+                Continue
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
-      <div id="buttons" className="flex-1">
-        <Button>Edit</Button>
+      <hr />
+      <div>
+        <p className="text-muted-foreground text-justify text-sm">
+          {props.description}
+        </p>
+      </div>
+      <div className="flex min-w-0 items-center gap-2 rounded-2xl border p-2">
+        <div className="border-r p-2">
+          <LinkDiagonal className="" />
+        </div>
+
+        <Link
+          href={props.url}
+          target="_blank"
+          // className="block break-all"
+          // className="min-w-0 break-all text-fuchsia-400 underline-offset-2 transition-colors hover:text-fuchsia-500 hover:underline"
+          className="text-accent min-w-0 break-all underline-offset-2 transition-colors hover:underline"
+        >
+          {truncateURL({
+            url: props.url,
+            max: 85,
+          })}
+        </Link>
       </div>
     </div>
   );

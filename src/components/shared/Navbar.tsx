@@ -3,18 +3,23 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useTopLoader } from "nextjs-toploader";
 
 export const Navbar = () => {
   const router = useRouter();
   const session = useSession();
+  const loader = useTopLoader();
 
   const handleRegister = () => {
+    loader.start();
     router.push("/register");
   };
   const handleLogin = async () => {
-    await signIn("google");
+    loader.start();
+    await signIn();
   };
   const handleLogout = async () => {
+    loader.start();
     await signOut();
   };
   console.log(session);

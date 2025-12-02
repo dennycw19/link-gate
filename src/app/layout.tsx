@@ -6,7 +6,8 @@ import { Geist } from "next/font/google";
 import { TRPCReactProvider } from "~/trpc/react";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "~/components/theme-provider";
-import Providers from "./providers";
+import { TopLoaderProvider } from "~/components/shared/TopLoaderProvider";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
       <body>
+        <TopLoaderProvider />
         <SessionProvider>
           <ThemeProvider
             attribute="class"
@@ -33,7 +35,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <TRPCReactProvider>
-              <Providers>{children}</Providers>
+              {children}
+              <Toaster richColors position="top-center" />
             </TRPCReactProvider>
           </ThemeProvider>
         </SessionProvider>

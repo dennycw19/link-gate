@@ -17,6 +17,7 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      username: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -34,8 +35,6 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 
-const USERS = [{ id: "1", username: "dennycahyow", password: "secret123" }];
-
 export const authConfig = {
   providers: [
     CredentialsProvider({
@@ -44,7 +43,7 @@ export const authConfig = {
         username: {},
         password: {},
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const username = credentials?.username as string;
         const password = credentials?.password as string;
         if (!credentials.username || !credentials.password) {

@@ -173,6 +173,8 @@ exports.Prisma.LinksScalarFieldEnum = {
   title: 'title',
   description: 'description',
   link: 'link',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   userId: 'userId'
 };
 
