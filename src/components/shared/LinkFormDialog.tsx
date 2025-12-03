@@ -61,7 +61,7 @@ export const LinkFormDialog = ({
           },
           {
             onSuccess: () => {
-              apiUtils.link.getLinkPaginated.invalidate();
+              void apiUtils.link.getLinkPaginated.invalidate();
               form.reset();
               onSuccess?.();
               resolve("updated");
@@ -72,7 +72,7 @@ export const LinkFormDialog = ({
       } else {
         createMutation.mutate(values, {
           onSuccess: () => {
-            apiUtils.link.getLinkPaginated.invalidate();
+            void apiUtils.link.getLinkPaginated.invalidate();
             form.reset();
             onSuccess?.();
             resolve("created");
