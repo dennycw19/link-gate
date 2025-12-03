@@ -12,17 +12,31 @@ import { Toaster } from "~/components/ui/sonner";
 export const metadata: Metadata = {
   title: "LinkGate - Private Link Manager",
   description:
-    "LinkGate is a safe place to store private links like Google Drive. Access important links without fear of them being exposed to others, especially when using a public computer.",
-  keywords: [
-    "LinkGate",
-    "private link manager",
-    "secure link storage",
-    "Private storage link shortlink",
-    "secure shortlink",
-    "link manager",
-    "link privacy",
-  ],
-  authors: [{ name: "NeoCortexx" }],
+    "LinkGate is a safe place to store private links like Google Drive or other cloud storage you share to public but only you can access. Access important links without fear of them being exposed to others, especially when using a public computer.",
+
+  openGraph: {
+    type: "website",
+    url: "https://link-gate-app.vercel.app/", // ganti sesuai deploymentmu
+    title: "LinkGate - Private Link Manager",
+    description:
+      "LinkGate is a safe place to store private links like Google Drive or other cloud storage you share to public but only you can access. Access important links without fear of them being exposed to others, especially when using a public computer.",
+    images: [
+      {
+        url: "/og-image.png", // taruh image di public folder
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "LinkGate - Private Link Manager",
+    description:
+      "LinkGate is a safe place to store private links like Google Drive or other cloud storage you share to public but only you can access. Access important links without fear of them being exposed to others, especially when using a public computer.",
+    images: ["/og-image.png"],
+  },
+
   creator: "NeoCortexx",
   publisher: "PT Neo Solusindo",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
