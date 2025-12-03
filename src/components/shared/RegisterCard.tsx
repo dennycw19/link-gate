@@ -26,6 +26,7 @@ import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useTopLoader } from "nextjs-toploader";
 import { toast } from "sonner";
+import { getErrorMessage } from "~/lib/utils";
 
 //Validasi
 const createRegisterFormSchema = z
@@ -104,7 +105,7 @@ export const RegisterCard = () => {
                 message: err.message,
               });
             }
-            reject(err);
+            reject(new Error(err?.message ?? "Unknown error"));
           },
         },
       );
@@ -113,7 +114,7 @@ export const RegisterCard = () => {
     toast.promise(promise, {
       loading: "Registering the account...",
       success: "Registration successful!",
-      error: (err: any) => err.message ?? "Registration failed",
+      error: getErrorMessage,
     });
   };
 

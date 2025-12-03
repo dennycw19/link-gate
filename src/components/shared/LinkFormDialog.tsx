@@ -17,6 +17,7 @@ import { api } from "~/trpc/react";
 import { Loader2Icon } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { getErrorMessage } from "~/lib/utils";
 
 // Validasi
 const linkFormSchema = z.object({
@@ -59,19 +60,19 @@ export const LinkFormDialog = ({
             ...values,
           },
           {
-            onSuccess: async () => {
-              await apiUtils.link.getLinkPaginated.invalidate();
+            onSuccess: () => {
+              apiUtils.link.getLinkPaginated.invalidate();
               form.reset();
               onSuccess?.();
               resolve("updated");
             },
-            onError: (err) => reject(err),
+            onError: (err) => reject(new Error(err.message ?? "Unknown error")),
           },
         );
       } else {
         createMutation.mutate(values, {
-          onSuccess: async () => {
-            await apiUtils.link.getLinkPaginated.invalidate();
+          onSuccess: () => {
+            apiUtils.link.getLinkPaginated.invalidate();
             form.reset();
             onSuccess?.();
             resolve("created");
@@ -82,7 +83,7 @@ export const LinkFormDialog = ({
     toast.promise(promise, {
       loading: linkId ? "Updating link..." : "Adding link...",
       success: linkId ? "Link Updated" : "Link added!",
-      error: (err) => err.message ?? "Something went wrong",
+      error: getErrorMessage,
     });
   };
   // const handleSubmit = (values: LinkFormSchema) => {
