@@ -73,8 +73,8 @@ export const HomeLinkList = () => {
               </div>
               <h3 className="text-xl font-semibold">No Links Found</h3>
               <p className="text-muted-foreground mt-1 max-w-sm">
-                You haven't added any links yet. Start by creating your first
-                link!
+                {`You haven't added any links yet. Start by creating your first
+                link!`}
               </p>
             </div>
           )}
