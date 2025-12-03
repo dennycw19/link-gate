@@ -1,8 +1,6 @@
+import { TRPCError } from "@trpc/server";
 import z from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { TRPCError } from "@trpc/server";
-import { link } from "fs";
-import { title } from "process";
 
 export const linkRouter = createTRPCRouter({
   createLink: protectedProcedure
@@ -32,6 +30,7 @@ export const linkRouter = createTRPCRouter({
       z.object({
         limit: z.number().min(1).max(50).default(2),
         cursor: z.string().optional(),
+        userId: z.string(),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -41,6 +40,7 @@ export const linkRouter = createTRPCRouter({
       const links = await db.links.findMany({
         take: limit + 1,
         cursor: cursor ? { id: cursor } : undefined,
+        where: { userId: input.userId },
         orderBy: {
           createdAt: "desc",
         },
@@ -68,6 +68,7 @@ export const linkRouter = createTRPCRouter({
     .input(
       z.object({
         linkId: z.string(),
+        userId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -77,6 +78,7 @@ export const linkRouter = createTRPCRouter({
       const delLink = await db.links.delete({
         where: {
           id: linkId,
+          userId: input.userId,
         },
       });
       return delLink;
@@ -114,6 +116,7 @@ export const linkRouter = createTRPCRouter({
         title: z.string(),
         description: z.string(),
         url: z.string(),
+        userId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -123,6 +126,7 @@ export const linkRouter = createTRPCRouter({
       const updtLink = await db.links.update({
         where: {
           id: linkId,
+          userId: input.userId,
         },
         data: {
           title: input.title,
@@ -130,5 +134,6 @@ export const linkRouter = createTRPCRouter({
           link: input.url,
         },
       });
+      return updtLink;
     }),
 });

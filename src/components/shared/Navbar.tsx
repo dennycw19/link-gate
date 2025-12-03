@@ -4,10 +4,11 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useTopLoader } from "nextjs-toploader";
+import Image from "next/image";
 
 export const Navbar = () => {
   const router = useRouter();
-  const session = useSession();
+  // const session = useSession();
   const loader = useTopLoader();
 
   const handleRegister = () => {
@@ -22,19 +23,31 @@ export const Navbar = () => {
     loader.start();
     await signOut();
   };
-  console.log(session);
 
   return (
     <nav className="border-b">
       <header className="flex items-center justify-between px-6 py-4">
         <div className="text-xl font-bold">
-          <Link href={"/"}>Link Gate</Link>
+          {/* <Link href={"/"}>Link Gate</Link> */}
+          <Link href={"/"}>
+            <Image
+              src="/link-gate-logo3.png"
+              alt="Link Gate Logo"
+              width={240} // otomatis menjaga rasio dari 1035x541
+              height={120} // sesuaikan dengan tinggi navbar
+              className="h-10 w-auto" // h-10 = 40px (standar navbar)
+              priority
+            />
+          </Link>
         </div>
         <div className="flex gap-4">
           <Button type="button" onClick={handleRegister}>
             Register
           </Button>
-          {session.data?.user ? (
+          <Button type="button" variant={"secondary"} onClick={handleLogout}>
+            Logout
+          </Button>
+          {/* {session.data?.user ? (
             <Button type="button" variant={"secondary"} onClick={handleLogout}>
               Logout
             </Button>
@@ -42,7 +55,7 @@ export const Navbar = () => {
             <Button type="button" onClick={handleLogin}>
               Login
             </Button>
-          )}
+          )} */}
         </div>
       </header>
     </nav>

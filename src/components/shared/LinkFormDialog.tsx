@@ -15,11 +15,13 @@ import {
 } from "../ui/field";
 import { api } from "~/trpc/react";
 import { Loader2Icon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 // Validasi
 const linkFormSchema = z.object({
   title: z.string().max(20).min(1),
-  description: z.string().max(50).min(1),
+  description: z.string().max(100).min(1),
   url: z.string().min(1),
 });
 
@@ -41,37 +43,59 @@ export const LinkFormDialog = ({
     defaultValues: defaultValues ?? { title: "", description: "", url: "" },
   });
   const apiUtils = api.useUtils();
+  const { data: session } = useSession();
 
-  const createMutation = api.link.createLink.useMutation({
-    onSuccess: async () => {
-      alert("Link has been added successfully");
-      form.reset();
-      await apiUtils.link.getLinkPaginated.invalidate();
-      onSuccess?.();
-    },
-    onError: (error) => {
-      if (error.message) alert(error.message);
-    },
-  });
+  const createMutation = api.link.createLink.useMutation();
 
-  const updateMutation = api.link.updateLink.useMutation({
-    onSuccess: async () => {
-      alert("Link has been updated successfully");
-      await apiUtils.link.getLinkPaginated.invalidate();
-      onSuccess?.();
-    },
-    onError: (error) => {
-      if (error.message) alert(error.message);
-    },
-  });
+  const updateMutation = api.link.updateLink.useMutation();
 
   const handleSubmit = (values: LinkFormSchema) => {
-    if (linkId) {
-      updateMutation.mutate({ linkId: linkId, ...values });
-    } else {
-      createMutation.mutate(values);
-    }
+    const promise = new Promise((resolve, reject) => {
+      if (linkId) {
+        updateMutation.mutate(
+          {
+            linkId: linkId,
+            userId: session?.user.id ?? "",
+            ...values,
+          },
+          {
+            onSuccess: async () => {
+              await apiUtils.link.getLinkPaginated.invalidate();
+              form.reset();
+              onSuccess?.();
+              resolve("updated");
+            },
+            onError: (err) => reject(err),
+          },
+        );
+      } else {
+        createMutation.mutate(values, {
+          onSuccess: async () => {
+            await apiUtils.link.getLinkPaginated.invalidate();
+            form.reset();
+            onSuccess?.();
+            resolve("created");
+          },
+        });
+      }
+    });
+    toast.promise(promise, {
+      loading: linkId ? "Updating link..." : "Adding link...",
+      success: linkId ? "Link Updated" : "Link added!",
+      error: (err) => err.message ?? "Something went wrong",
+    });
   };
+  // const handleSubmit = (values: LinkFormSchema) => {
+  //   if (linkId) {
+  //     updateMutation.mutate({
+  //       linkId: linkId,
+  //       userId: session?.user.id ?? "",
+  //       ...values,
+  //     });
+  //   } else {
+  //     createMutation.mutate(values);
+  //   }
+  // };
 
   const isLoading = linkId
     ? updateMutation.isPending

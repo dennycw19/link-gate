@@ -5,22 +5,31 @@ import { Menubar } from "./Menubar";
 import { Navbar } from "./Navbar";
 import { useEffect, useRef } from "react";
 import { Loader2Icon } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { useTopLoader } from "nextjs-toploader";
 
 export const HomeLinkList = () => {
+  const router = useRouter();
+  const loader = useTopLoader();
+  const { data: session, status } = useSession();
   const paginatedLinkQuery = api.link.getLinkPaginated.useInfiniteQuery(
     {
       limit: 5,
+      userId: session?.user.id ?? "",
     },
     {
       getNextPageParam: ({ nextCursor, links }) => {
         return nextCursor;
       },
+      enabled: !!session?.user.id,
     },
   );
 
-  const handleFetchNextPage = async () => {
-    await paginatedLinkQuery.fetchNextPage();
-  };
+  // const handleFetchNextPage = async () => {
+  //   await paginatedLinkQuery.fetchNextPage();
+  // };
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
@@ -42,12 +51,18 @@ export const HomeLinkList = () => {
     return () => observer.disconnect();
   }, [loadMoreRef, paginatedLinkQuery]);
 
-  const allLinks =
-    paginatedLinkQuery.data?.pages.flatMap((page) => page.links) ?? [];
+  // const allLinks =
+  //   paginatedLinkQuery.data?.pages.flatMap((page) => page.links) ?? [];
+
+  const handleLogin = () => {
+    loader.start();
+    router.push("/login");
+  };
 
   return (
     <>
       <Navbar />
+
       <main className="container mx-auto max-w-4xl py-8">
         <Menubar />
         <div className="space-y-2 p-2">
@@ -74,6 +89,18 @@ export const HomeLinkList = () => {
             </span>
           )}
         </div>
+
+        {/* <div className="flex min-h-screen items-center justify-center">
+          <div className="bg-card flex h-80 w-100 flex-col justify-between gap-5 rounded-2xl p-8 shadow-lg">
+            <div className="space-y-10">
+              <h1 className="text-center text-5xl">⚠️</h1>
+              <h1 className="text-center text-3xl font-bold">
+                You must be logged in to access this website!
+              </h1>
+            </div>
+            <Button onClick={handleLogin}>LOGIN</Button>
+          </div>
+        </div> */}
       </main>
     </>
   );

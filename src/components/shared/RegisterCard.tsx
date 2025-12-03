@@ -25,6 +25,7 @@ import { api } from "~/trpc/react";
 import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 import { useState } from "react";
 import { useTopLoader } from "nextjs-toploader";
+import { toast } from "sonner";
 
 //Validasi
 const createRegisterFormSchema = z
@@ -73,30 +74,46 @@ export const RegisterCard = () => {
     },
   });
 
-  const createRegisterMutation = api.user.createUser.useMutation({
-    onSuccess: async () => {
-      alert("Registration successful. You can now log in.");
-      formRegister.reset();
-      setShowPassword(false);
-      setShowConfirmPassword(false);
-      router.push("/login");
-    },
-    onError: (error) => {
-      if (error.message.includes("Username")) {
-        formRegister.setError("username", {
-          type: "manual",
-          message: error.message,
-        });
-      } else {
-        alert(error.message);
-      }
-    },
-  });
+  const createRegisterMutation = api.user.createUser.useMutation();
 
+  // const handleRegister = (values: CreateRegisterFormSchema) => {
+  //   createRegisterMutation.mutate({
+  //     username: values.username,
+  //     password: values.password,
+  //   });
+  // };
   const handleRegister = (values: CreateRegisterFormSchema) => {
-    createRegisterMutation.mutate({
-      username: values.username,
-      password: values.password,
+    const promise = new Promise((resolve, reject) => {
+      createRegisterMutation.mutate(
+        {
+          username: values.username,
+          password: values.password,
+        },
+        {
+          onSuccess: () => {
+            formRegister.reset();
+            setShowPassword(false);
+            setShowConfirmPassword(false);
+            resolve("registered");
+            router.push("/");
+          },
+          onError: (err) => {
+            if (err.message.includes("Username")) {
+              formRegister.setError("username", {
+                type: "manual",
+                message: err.message,
+              });
+            }
+            reject(err);
+          },
+        },
+      );
+    });
+
+    toast.promise(promise, {
+      loading: "Registering the account...",
+      success: "Registration successful!",
+      error: (err: any) => err.message ?? "Registration failed",
     });
   };
 

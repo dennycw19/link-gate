@@ -23,6 +23,7 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { DropdownMenu, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { LinkFormDialog } from "./LinkFormDialog";
+import { useSession } from "next-auth/react";
 
 type LinkCardProps = {
   id: string;
@@ -34,6 +35,7 @@ type LinkCardProps = {
 
 export const LinkCard = (props: LinkCardProps) => {
   const apiUtils = api.useUtils();
+  const { data: session } = useSession();
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   type TruncateURLProps = {
@@ -56,6 +58,7 @@ export const LinkCard = (props: LinkCardProps) => {
       deleteLinkMutation.mutateAsync(
         {
           linkId: props.id,
+          userId: session?.user.id ?? "",
         },
         {
           onSuccess: () => {
@@ -71,9 +74,6 @@ export const LinkCard = (props: LinkCardProps) => {
     );
   };
 
-  const getLinkDetailQuery = api.link.getLinkById.useQuery({
-    linkId: props.id,
-  });
   return (
     <div className="space-y-2 rounded-xl border p-6 shadow">
       <div className="flex items-center justify-between">
@@ -132,8 +132,10 @@ export const LinkCard = (props: LinkCardProps) => {
             </AlertDialogDescription>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleDeleteLink}>
-                Continue
+              <AlertDialogAction asChild>
+                <Button variant={"destructive"} onClick={handleDeleteLink}>
+                  Delete
+                </Button>
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

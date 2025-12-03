@@ -12,7 +12,7 @@ export const Menubar = () => {
   return (
     <div className="flex justify-between p-2">
       <ButtonGroup>
-        <Input placeholder="Search..." />
+        <Input placeholder="⚠️Under Maintenance⚠️" />
         <Button variant="outline" aria-label="Search">
           <SearchIcon />
         </Button>
