@@ -4,7 +4,7 @@ import { LinkCard } from "./LinkCard";
 import { Menubar } from "./Menubar";
 import { Navbar } from "./Navbar";
 import { useEffect, useRef } from "react";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, Rows } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
@@ -51,8 +51,8 @@ export const HomeLinkList = () => {
     return () => observer.disconnect();
   }, [loadMoreRef, paginatedLinkQuery]);
 
-  // const allLinks =
-  //   paginatedLinkQuery.data?.pages.flatMap((page) => page.links) ?? [];
+  const allLinks =
+    paginatedLinkQuery.data?.pages.flatMap((page) => page.links) ?? [];
 
   const handleLogin = () => {
     loader.start();
@@ -66,6 +66,18 @@ export const HomeLinkList = () => {
       <main className="container mx-auto max-w-4xl py-8">
         <Menubar />
         <div className="space-y-2 p-2">
+          {!paginatedLinkQuery.isLoading && allLinks.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="mb-4 p-4">
+                <Rows className="text-accent h-10 w-10" />
+              </div>
+              <h3 className="text-xl font-semibold">No Links Found</h3>
+              <p className="text-muted-foreground mt-1 max-w-sm">
+                You haven't added any links yet. Start by creating your first
+                link!
+              </p>
+            </div>
+          )}
           {paginatedLinkQuery.data?.pages
             .flatMap((page) => page.links)
             .map((link) => {
