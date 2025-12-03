@@ -31,7 +31,7 @@ export const Navbar = () => {
           {/* <Link href={"/"}>Link Gate</Link> */}
           <Link href={"/"}>
             <Image
-              src="/link-gate-logo3.png"
+              src="/link-gate-logo.png"
               alt="Link Gate Logo"
               width={240} // otomatis menjaga rasio dari 1035x541
               height={120} // sesuaikan dengan tinggi navbar
