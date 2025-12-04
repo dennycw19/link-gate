@@ -10,7 +10,7 @@ import { LinkFormDialog } from "./LinkFormDialog";
 export const Menubar = () => {
   const [showAddLinkDialog, setShowAddLinkDialog] = useState(false);
   return (
-    <div className="flex justify-between p-2">
+    <div className="flex justify-between p-2 gap-2">
       <ButtonGroup>
         <Input placeholder="⚠️Under Maintenance⚠️" disabled />
         <Button variant="outline" aria-label="Search" disabled>

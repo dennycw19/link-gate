@@ -21,7 +21,7 @@ import { getErrorMessage } from "~/lib/utils";
 
 // Validasi
 const linkFormSchema = z.object({
-  title: z.string().max(20).min(1),
+  title: z.string().max(50).min(1),
   description: z.string().max(100).min(1),
   url: z.string().min(1),
 });

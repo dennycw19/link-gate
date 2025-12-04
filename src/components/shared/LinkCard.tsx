@@ -75,9 +75,9 @@ export const LinkCard = (props: LinkCardProps) => {
   };
 
   return (
-    <div className="space-y-2 rounded-xl border p-6 shadow">
+    <div className="bg-card space-y-2 rounded-xl border-2 p-6 shadow">
       <div className="flex items-center justify-between">
-        <h1>{props.title}</h1>
+        <h1 className="text-justify text-xl font-bold">{props.title}</h1>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant={"link"} aria-label="Open menu" className="">

@@ -65,7 +65,7 @@ export const HomeLinkList = () => {
 
       <main className="container mx-auto max-w-4xl py-8">
         <Menubar />
-        <div className="space-y-2 p-2">
+        <div className="space-y-3 p-2">
           {!paginatedLinkQuery.isLoading && allLinks.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="mb-4 p-4">
