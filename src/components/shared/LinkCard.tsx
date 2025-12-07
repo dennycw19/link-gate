@@ -31,6 +31,7 @@ type LinkCardProps = {
   description: string;
   url: string;
   createdAt: Date;
+  updatedAt: Date;
 };
 
 export const LinkCard = (props: LinkCardProps) => {
@@ -77,7 +78,18 @@ export const LinkCard = (props: LinkCardProps) => {
   return (
     <div className="bg-card space-y-2 rounded-xl border-2 p-6 shadow">
       <div className="flex items-center justify-between">
-        <h1 className="text-justify text-xl font-bold">{props.title}</h1>
+        <div className="flex flex-col space-y-0.5">
+          <h1 className="text-justify text-xl font-bold">{props.title}</h1>
+          <p className="text-muted-foreground text-sm italic">
+            {props.updatedAt.toLocaleDateString("id-ID", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+        </div>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant={"link"} aria-label="Open menu" className="">

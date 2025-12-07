@@ -1,6 +1,4 @@
 import { HomeLinkList } from "~/components/shared/HomeLinkList";
-import { auth } from "~/server/auth";
-import { api } from "~/trpc/server";
 
 export default async function Home() {
   // const session = await auth();

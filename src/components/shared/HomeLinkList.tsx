@@ -3,7 +3,7 @@ import { api } from "~/trpc/react";
 import { LinkCard } from "./LinkCard";
 import { Menubar } from "./Menubar";
 import { Navbar } from "./Navbar";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Loader2Icon, Rows } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
@@ -14,10 +14,12 @@ export const HomeLinkList = () => {
   const router = useRouter();
   const loader = useTopLoader();
   const { data: session, status } = useSession();
+  const [sort, setSort] = useState<"desc" | "asc">("asc");
   const paginatedLinkQuery = api.link.getLinkPaginated.useInfiniteQuery(
     {
       limit: 5,
       userId: session?.user.id ?? "",
+      sort,
     },
     {
       getNextPageParam: ({ nextCursor, links }) => {
@@ -32,24 +34,54 @@ export const HomeLinkList = () => {
   // };
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
-
-  // Infinite scroll observer
+  // Infinite scroll observer (fixed version)
   useEffect(() => {
-    if (!loadMoreRef.current || !paginatedLinkQuery.hasNextPage) return;
+    const el = loadMoreRef.current;
+
+    // Kalau ref belum siap atau tidak ada halaman berikut → jangan pasang observer
+    if (!el || !paginatedLinkQuery.hasNextPage) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
-          void paginatedLinkQuery.fetchNextPage();
+          paginatedLinkQuery.fetchNextPage();
         }
       },
-      { rootMargin: "200px" }, // trigger sebelum benar-benar di viewport
+      { rootMargin: "200px" },
     );
 
-    observer.observe(loadMoreRef.current);
+    observer.observe(el);
 
-    return () => observer.disconnect();
-  }, [loadMoreRef, paginatedLinkQuery]);
+    // Cleanup selalu jalan saat:
+    // - sort berubah
+    // - data berubah
+    // - unmount
+    return () => {
+      observer.unobserve(el);
+      observer.disconnect();
+    };
+  }, [
+    paginatedLinkQuery.hasNextPage, // hanya tergantung nextPage
+    paginatedLinkQuery.fetchNextPage, // fungsi aman dan stabil
+  ]);
+
+  // Infinite scroll observer
+  // useEffect(() => {
+  //   if (!loadMoreRef.current || !paginatedLinkQuery.hasNextPage) return;
+
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       if (entries[0]?.isIntersecting) {
+  //         void paginatedLinkQuery.fetchNextPage();
+  //       }
+  //     },
+  //     { rootMargin: "200px" }, // trigger sebelum benar-benar di viewport
+  //   );
+
+  //   observer.observe(loadMoreRef.current);
+
+  //   return () => observer.disconnect();
+  // }, [loadMoreRef, paginatedLinkQuery]);
 
   const allLinks =
     paginatedLinkQuery.data?.pages.flatMap((page) => page.links) ?? [];
@@ -64,20 +96,27 @@ export const HomeLinkList = () => {
       <Navbar />
 
       <main className="container mx-auto max-w-4xl py-8">
-        <Menubar />
+        <Menubar sort={sort} setSort={setSort} />
         <div className="space-y-3 p-2">
-          {!paginatedLinkQuery.isLoading && allLinks.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="mb-4 p-4">
-                <Rows className="text-accent h-10 w-10" />
-              </div>
-              <h3 className="text-xl font-semibold">No Links Found</h3>
-              <p className="text-muted-foreground mt-1 max-w-sm">
-                {`You haven't added any links yet. Start by creating your first
-                link!`}
-              </p>
+          {paginatedLinkQuery.isLoading && (
+            <div className="flex flex-col items-center justify-center space-y-2 py-10">
+              <Loader2Icon className="text-muted-foreground h-24 w-24 animate-spin" />
+              <span className="text-muted-foreground">Loading content...</span>
             </div>
           )}
+          {!paginatedLinkQuery.isLoading &&
+            paginatedLinkQuery.data?.pages?.[0]?.links?.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <div className="mb-4 p-4">
+                  <Rows className="text-accent h-10 w-10" />
+                </div>
+                <h3 className="text-xl font-semibold">No Links Found</h3>
+                <p className="text-muted-foreground mt-1 max-w-sm">
+                  {`You haven't added any links yet. Start by creating your first
+                link!`}
+                </p>
+              </div>
+            )}
           {paginatedLinkQuery.data?.pages
             .flatMap((page) => page.links)
             .map((link) => {
@@ -89,6 +128,7 @@ export const HomeLinkList = () => {
                   description={link.description}
                   url={link.link}
                   createdAt={link.createdAt}
+                  updatedAt={link.updatedAt}
                 />
               );
             })}

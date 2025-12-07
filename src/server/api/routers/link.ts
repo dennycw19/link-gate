@@ -31,6 +31,7 @@ export const linkRouter = createTRPCRouter({
         limit: z.number().min(1).max(50).default(2),
         cursor: z.string().optional(),
         userId: z.string(),
+        sort: z.enum(["asc", "desc"]).default("asc"),
       }),
     )
     .query(async ({ ctx, input }) => {
@@ -42,7 +43,7 @@ export const linkRouter = createTRPCRouter({
         cursor: cursor ? { id: cursor } : undefined,
         where: { userId: input.userId },
         orderBy: {
-          createdAt: "desc",
+          updatedAt: input.sort,
         },
         select: {
           id: true,
@@ -50,6 +51,7 @@ export const linkRouter = createTRPCRouter({
           description: true,
           link: true,
           createdAt: true,
+          updatedAt: true,
         },
       });
 
