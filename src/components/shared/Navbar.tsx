@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { useTopLoader } from "nextjs-toploader";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTopLoader } from "nextjs-toploader";
+import { Button } from "../ui/button";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -15,10 +15,7 @@ export const Navbar = () => {
     loader.start();
     router.push("/register");
   };
-  const handleLogin = async () => {
-    loader.start();
-    await signIn();
-  };
+
   const handleLogout = async () => {
     loader.start();
     await signOut();
@@ -47,15 +44,6 @@ export const Navbar = () => {
           <Button type="button" variant={"secondary"} onClick={handleLogout}>
             Logout
           </Button>
-          {/* {session.data?.user ? (
-            <Button type="button" variant={"secondary"} onClick={handleLogout}>
-              Logout
-            </Button>
-          ) : (
-            <Button type="button" onClick={handleLogin}>
-              Login
-            </Button>
-          )} */}
         </div>
       </header>
     </nav>

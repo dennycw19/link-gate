@@ -1,19 +1,18 @@
 "use client";
+import { Loader2Icon, Rows } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useTopLoader } from "nextjs-toploader";
+import { useEffect, useRef, useState } from "react";
 import { api } from "~/trpc/react";
 import { LinkCard } from "./LinkCard";
 import { Menubar } from "./Menubar";
 import { Navbar } from "./Navbar";
-import { useEffect, useRef, useState } from "react";
-import { Loader2Icon, Rows } from "lucide-react";
-import { useSession } from "next-auth/react";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import { useTopLoader } from "nextjs-toploader";
 
 export const HomeLinkList = () => {
   const router = useRouter();
   const loader = useTopLoader();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [sort, setSort] = useState<"desc" | "asc">("asc");
   const paginatedLinkQuery = api.link.getLinkPaginated.useInfiniteQuery(
     {
@@ -22,16 +21,12 @@ export const HomeLinkList = () => {
       sort,
     },
     {
-      getNextPageParam: ({ nextCursor, links }) => {
+      getNextPageParam: ({ nextCursor }) => {
         return nextCursor;
       },
       enabled: !!session?.user.id,
     },
   );
-
-  // const handleFetchNextPage = async () => {
-  //   await paginatedLinkQuery.fetchNextPage();
-  // };
 
   const loadMoreRef = useRef<HTMLDivElement>(null);
   // Infinite scroll observer (fixed version)
@@ -44,7 +39,7 @@ export const HomeLinkList = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0]?.isIntersecting) {
-          paginatedLinkQuery.fetchNextPage();
+          void paginatedLinkQuery.fetchNextPage();
         }
       },
       { rootMargin: "200px" },
@@ -85,11 +80,6 @@ export const HomeLinkList = () => {
 
   const allLinks =
     paginatedLinkQuery.data?.pages.flatMap((page) => page.links) ?? [];
-
-  const handleLogin = () => {
-    loader.start();
-    router.push("/login");
-  };
 
   return (
     <>
@@ -141,18 +131,6 @@ export const HomeLinkList = () => {
             </span>
           )}
         </div>
-
-        {/* <div className="flex min-h-screen items-center justify-center">
-          <div className="bg-card flex h-80 w-100 flex-col justify-between gap-5 rounded-2xl p-8 shadow-lg">
-            <div className="space-y-10">
-              <h1 className="text-center text-5xl">⚠️</h1>
-              <h1 className="text-center text-3xl font-bold">
-                You must be logged in to access this website!
-              </h1>
-            </div>
-            <Button onClick={handleLogin}>LOGIN</Button>
-          </div>
-        </div> */}
       </main>
     </>
   );

@@ -1,8 +1,11 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { error } from "console";
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTopLoader } from "nextjs-toploader";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import { Button } from "~/components/ui/button";
 import {
@@ -21,12 +24,8 @@ import {
   FieldSet,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { api } from "~/trpc/react";
-import { Eye, EyeOff, Loader2Icon } from "lucide-react";
-import { useState } from "react";
-import { useTopLoader } from "nextjs-toploader";
-import { toast } from "sonner";
 import { getErrorMessage } from "~/lib/utils";
+import { api } from "~/trpc/react";
 
 //Validasi
 const createRegisterFormSchema = z

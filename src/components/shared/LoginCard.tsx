@@ -1,6 +1,9 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import z from "zod";
 import { Button } from "~/components/ui/button";
@@ -12,7 +15,6 @@ import {
 } from "~/components/ui/card";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -20,10 +22,6 @@ import {
   FieldSet,
 } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
-import { signIn } from "next-auth/react";
-import { log } from "console";
-import { useState } from "react";
-import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 
 //Validasi
 const createLoginFormSchema = z.object({
