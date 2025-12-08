@@ -185,7 +185,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/vercel/sandbox/primary/generated/prisma",
+      "value": "D:\\Iseng\\link-gate\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -194,16 +194,17 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "rhel-openssl-3.0.x",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/vercel/sandbox/primary/prisma/schema.prisma",
+    "sourceFilePath": "D:\\Iseng\\link-gate\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
   "clientVersion": "6.19.0",

@@ -1,5 +1,10 @@
 "use client";
-import { ArrowDown, ArrowUp, Plus, SearchIcon } from "lucide-react";
+import {
+  CalendarArrowDownIcon,
+  CalendarArrowUpIcon,
+  Plus,
+  SearchIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { ButtonGroup } from "../ui/button-group";
@@ -27,7 +32,7 @@ export const Menubar = ({ sort, setSort }: MenubarProps) => {
       </ButtonGroup>
       <div className="flex justify-between gap-2 p-2">
         <Button variant={"secondary"} onClick={handleSort}>
-          {sort === "asc" ? <ArrowDown /> : <ArrowUp />}
+          {sort === "asc" ? <CalendarArrowUpIcon /> : <CalendarArrowDownIcon />}
         </Button>
         <Button onClick={() => setShowAddLinkDialog(true)}>
           <Plus />
